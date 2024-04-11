@@ -9,6 +9,7 @@ The service should expose two REST endpoints:
 * `GET /api/players/{playerID}` - returns a single player by ID.
 
 Wishlist:
-* package for distribution (Docker image?)
+* ~~package for distribution (Docker image?)~~
+* unit tests
 
 sample data from [seanlahman.com](http://seanlahman.com/)
