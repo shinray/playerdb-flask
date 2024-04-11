@@ -10,3 +10,5 @@ The service should expose two REST endpoints:
 
 Wishlist:
 * package for distribution (Docker image?)
+
+sample data from [seanlahman.com](http://seanlahman.com/)
