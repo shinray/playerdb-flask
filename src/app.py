@@ -1,7 +1,7 @@
 import json
 import csv
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
@@ -19,6 +19,13 @@ with open(datasrc_path, 'rU', encoding='utf-8') as csvfile:
 @app.route('/api/players', methods=['GET'])
 def get_players():
  return jsonify(players)
+
+@app.route('/api/players/<playerId>', methods=['GET'])
+def get_player_by_id(playerId):
+   for p in players:
+      if p.get('playerID') == playerId:
+         return jsonify(p)
+   abort(404, "Could not find a player by the id {}".format(playerId))
 
 if __name__ == '__main__':
     app.run(port=5000)
