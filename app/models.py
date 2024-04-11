@@ -30,7 +30,11 @@ class Player(db.Model):
     retroID = db.Column(db.String(20))
 
     def as_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        try:
+            return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        except Exception as e:
+            print(f"Error serializing player: {e}")
+            return {}
 
     @staticmethod
     def get_players():
