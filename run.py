@@ -1,4 +1,4 @@
-from app import create_app, app
+from app import create_app
 from app.utils import read_csv_to_db
 
 app = create_app()
