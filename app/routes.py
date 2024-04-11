@@ -1,4 +1,6 @@
-from flask import Blueprint, jsonify, abort
+import threading
+from flask import Blueprint, jsonify, current_app
+from .utils import reset_database
 from .models import Player
 
 api_bp = Blueprint('api', __name__)
@@ -22,6 +24,14 @@ def get_player_by_id(playerId):
 
 @api_bp.route('/api/admin/loadfile', methods=['GET'])
 def loadfile():
-  if True:
-    return jsonify({"error": "This route is not yet implemented"}), 501
-  return jsonify({"message": "Processing source file..."}), 202
+    path = current_app.config['CSV_FILE_PATH']
+    def reset_db_thread(context, path):
+        with context:
+           reset_database(path)
+    app_context = current_app.app_context()       
+    
+    with current_app.app_context():
+        thread = threading.Thread(target=reset_db_thread, args=(app_context, path))
+        thread.start()
+
+    return jsonify({"message": "Processing source file..."}), 202

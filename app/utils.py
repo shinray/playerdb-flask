@@ -1,7 +1,9 @@
 import csv
 from .models import db, Player
 
-def read_csv_to_db(path):
+def read_csv(path):
+    print(f'loading from file {path}')
+    playerlist = []
     with open(path, 'rU', encoding='utf-8') as csvfile:
         csv_reader = csv.DictReader(csvfile)
         for row in csv_reader:
@@ -32,5 +34,19 @@ def read_csv_to_db(path):
                 finalGame=row['finalGame'],
                 retroID=row['retroID']
             )
-            db.session.add(player)
-        db.session.commit()
+            playerlist.append(player)
+        return playerlist
+
+def insert_players_to_db(players):
+    for player in players:
+        db.session.add(player)
+    db.session.commit()
+
+def load_into_db(path):
+    playerlist = read_csv(path)
+    insert_players_to_db(playerlist)
+
+def reset_database(path):
+    db.drop_all()
+    db.create_all()
+    load_into_db(path)
